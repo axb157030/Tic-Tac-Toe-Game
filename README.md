@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.1.
 
-I copied a lot of code from stackoverflow and https://flowbite.com/docs/forms/radio/ and https://tailwindcss.com
+I copied a lot of code from stackoverflow, https://flowbite.com/docs/forms/radio/, and https://tailwindcss.com
 
 ## Development server
 
