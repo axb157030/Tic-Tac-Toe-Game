@@ -1,0 +1,18 @@
+/* Apply animation or additional custom effects */
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+
+  td {
+    height: 50px;
+    width: 50px;
+    }

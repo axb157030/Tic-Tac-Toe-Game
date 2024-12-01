@@ -1,1 +1,2 @@
-<app-prompt></app-prompt>
+<app-prompt (showBoardEmitter)="showBoardFromPrompt($event)"></app-prompt>
+<app-tictactoe-form *ngIf="showBoard" class="fadeIn"></app-tictactoe-form>
