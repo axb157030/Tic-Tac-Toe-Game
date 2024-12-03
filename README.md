@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 I copied a lot of code from stackoverflow, https://flowbite.com/docs/forms/radio/, and https://tailwindcss.com
 
-The demo of this project can be found here (https://axb157030.github.io/Tic-Tac-Toe-Game/).
+The demo of this project can be found here https://axb157030.github.io/Tic-Tac-Toe-Game/.
 # Note
 Please change the input for the size of the tic tac board.
 
