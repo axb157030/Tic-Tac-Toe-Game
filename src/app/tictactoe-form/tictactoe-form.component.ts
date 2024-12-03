@@ -1,23 +1,51 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { SafeHtmlPipe } from '../SafeHTMLPipe';
 
 @Component({
   selector: 'app-tictactoe-form',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SafeHtmlPipe],
   templateUrl: './tictactoe-form.component.html',
   styleUrl: './tictactoe-form.component.css'
 })
-export class TictactoeFormComponent implements OnInit {
-  tictactoeBoard: String[][] = [];
-  boardSize: number = 3;
-  currentPlayer = 'X';
+export class TictactoeFormComponent implements OnInit, OnChanges {
+  tictactoeBoard: any[][] = [];
+  @Input() boardSize: number = 3;
+  @Input() playerSigns  = "";
+  @Input() resetBoard: boolean = false;
+  @Output() congratulated = new EventEmitter<boolean>();
+  isInverted: boolean = false;
+
   ngOnInit() { 
-    this.boardSize = 3;
     //const n = this.tictactoeBoard.length;  // Get the size of the board (rows or columns)
     this.tictactoeBoard = Array(this.boardSize).fill(null).map(() => Array(this.boardSize).fill(''));
-    this.currentPlayer = 'X'; // Can assign it anything
-    console.log("Hello")
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['resetBoard']) {
+      // Whenever inputValue changes, update the currentValue
+      this.isInverted = false;
+      this.tictactoeBoard = Array(this.boardSize).fill(null).map(() => Array(this.boardSize).fill(''));
+    }
+  }
+
+  private toggleInvert() {
+    this.isInverted = !this.isInverted;
+    if (this.isInverted) {
+      // Add the 'invert' class to the SVG string if it doesn't already have it
+      if (!this.playerSigns.includes('invert')) {
+        this.playerSigns = this.playerSigns.replace(
+          /<svg([^>]*)class="([^"]*)"/, 
+          '<svg$1class="$2 invert"'
+        );
+      }
+    } else {
+      // Remove the 'invert' class from the SVG string if it exists
+      this.playerSigns = this.playerSigns.replace(/class="([^"]*)invert([^"]*)"/, (match, p1, p2) => {
+        return `class="${p1.trim().replace(/\s+/g, ' ')}"`;
+      });
+    }
   }
 
 
@@ -51,7 +79,7 @@ export class TictactoeFormComponent implements OnInit {
   for (let col = 0; col < this.boardSize; col++) {
       let columnMatch = true;
       for (let row = 0; row < this.boardSize; row++) {
-          if (this.tictactoeBoard[row][col] !== this.tictactoeBoard[0][col] || this.tictactoeBoard[row][col] === ' ') {
+          if (this.tictactoeBoard[row][col] !== this.tictactoeBoard[0][col] || this.tictactoeBoard[row][col] === '') {
               columnMatch = false;
               break;
           }
@@ -62,7 +90,7 @@ export class TictactoeFormComponent implements OnInit {
   // Check top-left to bottom-right diagonal
   let diagonalMatch1 = true;
   for (let i = 0; i < this.boardSize; i++) {
-      if (this.tictactoeBoard[i][i] !== this.tictactoeBoard[0][0] || this.tictactoeBoard[i][i] === ' ') {
+      if (this.tictactoeBoard[i][i] !== this.tictactoeBoard[0][0] || this.tictactoeBoard[i][i] === '') {
           diagonalMatch1 = false;
           break;
       }
@@ -72,7 +100,7 @@ export class TictactoeFormComponent implements OnInit {
   // Check top-right to bottom-left diagonal
   let diagonalMatch2 = true;
   for (let i = 0; i < this.boardSize; i++) {
-      if (this.tictactoeBoard[i][this.boardSize - 1 - i] !== this.tictactoeBoard[0][this.boardSize - 1] || this.tictactoeBoard[i][this.boardSize - 1 - i] === ' ') {
+      if (this.tictactoeBoard[i][this.boardSize - 1 - i] !== this.tictactoeBoard[0][this.boardSize - 1] || this.tictactoeBoard[i][this.boardSize - 1 - i] === '') {
           diagonalMatch2 = false;
           break;
       }
@@ -85,11 +113,16 @@ export class TictactoeFormComponent implements OnInit {
 
 handleClick(row: number, col: number): void {
   // If the cell is empty, mark it with the current player's symbol
-  console.log("HEY THERE!!! " + row + " " + col)
   if (this.tictactoeBoard[row][col] === '') {
-    this.tictactoeBoard[row][col] = this.currentPlayer;
-    // Switch to the other player
-    this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+    this.tictactoeBoard[row][col] = this.playerSigns
+    // Switch to the other player and invert sign;
+    this.toggleInvert();
+    if(this.tictactoeShowWin()) {
+      this.congratulated.emit(true);
+    }
+    else {
+      this.congratulated.emit(false);
+    } 
   }
 }
 

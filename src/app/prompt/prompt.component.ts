@@ -14,7 +14,10 @@ import { SafeHtmlPipe } from '../SafeHTMLPipe';
 export class PromptComponent {
   ticTacToeForm!: FormGroup;
   @Output() showBoardEmitter = new EventEmitter<boolean>();
+  @Output() resetBoardEmitter = new EventEmitter<boolean>();
+  @Output() sizeBoardEmitter = new EventEmitter<number>();
   @Output() iconSelected = new EventEmitter<string>();
+  reset = false;
   icons = [
     {value: "Black book", svg: `<svg
               class="w-6 h-6 text-gray-800 dark:text-white"
@@ -82,11 +85,13 @@ export class PromptComponent {
     });
   }
   submitForm() {
-    console.log("Hello there ")
     const booleanValue = true;  // or false depending on your logic
+    this.reset = !this.reset;
     this.showBoardEmitter.emit(booleanValue);  // Emit the boolean value to the parent
+    this.resetBoardEmitter.emit(this.reset)
     const selectedIcon = this.icons.find(i => i.value === this.ticTacToeForm.get('symbol')?.value)?.svg || '';
     this.iconSelected.emit(selectedIcon);
+    this.sizeBoardEmitter.emit(this.ticTacToeForm.get('size')?.value);
   }
 }
 // https://refine.dev/blog/heroicons-with-tailwind/#a-navbar-with-heroicons

@@ -1,0 +1,33 @@
+<div *ngIf="showCongrats && !closeCongrats" @fade class="congratulation-board">
+  <div class="congratulations-message">
+    <p>🎉 Lovely Congratulations! 🎉</p>
+    <p>You WON the game! 🏆</p>
+  </div>
+
+  <div class="parade">
+    <span class="parade-item">🎊</span>
+    <span class="parade-item">🥳</span>
+    <span class="parade-item">💐</span>
+    <span class="parade-item">🏅</span>
+  </div>
+  <button (click)="closeCongratulation()" class="close-btn">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-6 h-6 text-gray-800"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  </button>
+</div>
+
+<!--<button (click)="triggerCelebration()" class="celebrate-button">
+  Celebrate your Victory!
+</button> -->

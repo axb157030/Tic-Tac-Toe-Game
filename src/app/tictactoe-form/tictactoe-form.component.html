@@ -8,8 +8,6 @@
           *ngFor="let cell of row; let colIndex = index"
           class="table-cell items-center justify-center text-4xl font-bold cursor-pointer transition-all transform duration-300 rounded-lg bg-gray-100 hover:bg-gray-200 hover:scale-110 active:scale-95"
           [ngClass]="{
-            'text-blue-600': cell === 'X',
-            'text-red-600': cell === 'O',
             'bg-gray-100': cell === '',
             'hover:bg-gray-200': cell === '',
             'hover:scale-110': cell === '',
@@ -17,7 +15,8 @@
           }"
           (click)="handleClick(rowIndex, colIndex)"
         >
-          {{ cell || "" }}
+          <!--{{ cell || "" }}-->
+          <div [innerHTML]="cell | safeHtml" class="mt-2"></div>
         </td>
       </tr>
     </tbody>
